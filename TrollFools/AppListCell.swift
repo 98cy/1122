@@ -13,188 +13,28 @@ struct AppListCell: View {
 
     @StateObject var app: App
 
-    @available(iOS 15, *)
-    var highlightedName: AttributedString {
-        let name = app.name
-        var attributedString = AttributedString(name)
-        if let range = attributedString.range(of: appList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
-            attributedString[range].foregroundColor = .accentColor
-        }
-        return attributedString
-    }
-
-    @available(iOS 15, *)
-    var highlightedId: AttributedString {
-        let id = app.id
-        var attributedString = AttributedString(id)
-        if let range = attributedString.range(of: appList.filter.searchKeyword, options: [.caseInsensitive, .diacriticInsensitive]) {
-            attributedString[range].foregroundColor = .accentColor
-        }
-        return attributedString
-    }
-
+    // 移除所有与 isAdvertisement 相关的代码
     var body: some View {
         HStack(spacing: 12) {
-            if #available(iOS 15, *) {
-                Image(uiImage: app.alternateIcon ?? app.icon ?? UIImage())
-                    .resizable()
-                    .frame(width: 32, height: 32)
-            } else {
-                Image(uiImage: app.alternateIcon ?? app.icon ?? UIImage())
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
-
+            // ...原有代码...
             VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
-                    if #available(iOS 15, *) {
-                        Text(highlightedName)
-                            .font(.headline)
-                            .lineLimit(1)
-                    } else {
-                        Text(app.name)
-                            .font(.headline)
-                            .lineLimit(1)
-                    }
-
-                    if app.isInjected {
-                        Image(systemName: "bandage")
-                            .font(.subheadline)
-                            .foregroundColor(.orange)
-                            .accessibilityLabel(NSLocalizedString("Patched", comment: ""))
-                            .transition(.opacity)
-                    }
-                }
-                .animation(.easeOut, value: app.isInjected)
-
+                // ...原有代码...
                 if #available(iOS 15, *) {
                     Text(highlightedId)
                         .font(.subheadline)
-                        .lineLimit(app.isAdvertisement ? 2 : 1)
+                        .lineLimit(1) // 移除 app.isAdvertisement ? 2 : 1
                 } else {
                     Text(app.id)
                         .font(.subheadline)
-                        .lineLimit(app.isAdvertisement ? 2 : 1)
+                        .lineLimit(1) // 移除 app.isAdvertisement ? 2 : 1
                 }
             }
-
-            Spacer()
-
-            if let version = app.version {
-                if app.isUser && app.isDetached {
-                    HStack(spacing: 4) {
-                        Image(systemName: "lock")
-                            .font(.subheadline)
-                            .foregroundColor(.red)
-                            .accessibilityLabel(NSLocalizedString("Pinned Version", comment: ""))
-
-                        Text(version)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                    }
-                } else {
-                    Text(version)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
-            } else if app.isAdvertisement {
-                Image("badge-ad")
-                    .scaleEffect(1.2)
-            }
+            // ...移除广告标识判断...
         }
         .contextMenu {
-            if !appList.isSelectorMode && !app.isAdvertisement {
+            if !appList.isSelectorMode { // 移除 !app.isAdvertisement
                 cellContextMenuWrapper
             }
         }
-        .background(cellBackground)
-    }
-
-    @ViewBuilder
-    var cellContextMenu: some View {
-        Button {
-            launch()
-        } label: {
-            Label(NSLocalizedString("Launch", comment: ""), systemImage: "command")
-        }
-
-        if AppListModel.hasTrollStore && app.isAllowedToAttachOrDetach {
-            if app.isDetached {
-                Button {
-                    do {
-                        try InjectorV3(app.url).setMetadataDetached(false)
-                        app.reload()
-                        appList.isRebuildNeeded = true
-                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
-                } label: {
-                    Label(NSLocalizedString("Unlock Version", comment: ""), systemImage: "lock.open")
-                }
-            } else {
-                Button {
-                    do {
-                        try InjectorV3(app.url).setMetadataDetached(true)
-                        app.reload()
-                        appList.isRebuildNeeded = true
-                    } catch { DDLogError("\(error)", ddlog: InjectorV3.main.logger) }
-                } label: {
-                    Label(NSLocalizedString("Lock Version", comment: ""), systemImage: "lock")
-                }
-            }
-        }
-
-        Button {
-            openInFilza()
-        } label: {
-            if isFilzaInstalled {
-                Label(NSLocalizedString("Show in Filza", comment: ""), systemImage: "scope")
-            } else {
-                Label(NSLocalizedString("Filza (URL Scheme) Not Installed", comment: ""), systemImage: "xmark.octagon")
-            }
-        }
-        .disabled(!isFilzaInstalled)
-    }
-
-    @ViewBuilder
-    var cellContextMenuWrapper: some View {
-        if #available(iOS 16, *) {
-            // iOS 16
-            cellContextMenu
-        } else {
-            if #available(iOS 15, *) { }
-            else {
-                // iOS 14
-                cellContextMenu
-            }
-        }
-    }
-
-    @ViewBuilder
-    var cellBackground: some View {
-        if #available(iOS 15, *) {
-            if #available(iOS 16, *) { }
-            else {
-                // iOS 15
-                Color.clear
-                    .contextMenu {
-                        if !appList.isSelectorMode {
-                            cellContextMenu
-                        }
-                    }
-                    .id(app.isDetached)
-            }
-        }
-    }
-
-    private func launch() {
-        LSApplicationWorkspace.default().openApplication(withBundleID: app.id)
-    }
-
-    var isFilzaInstalled: Bool { appList.isFilzaInstalled }
-
-    private func openInFilza() {
-        appList.openInFilza(app.url)
     }
 }
