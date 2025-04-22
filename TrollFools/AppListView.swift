@@ -33,7 +33,7 @@ struct AppListView: View {
         )
 
         let appStringFormat = """
-        %@ %@ %@ by 2025.04.22
+        %@ %@ %@ © Apple Inc
         %@
         """
 
