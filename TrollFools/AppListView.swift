@@ -22,22 +22,10 @@ struct AppListView: View {
     @State var selectedIndex: String? = nil
 
     @State var isWarningPresented = false
-    @State var temporaryOpenedURL: URLIdentifiable? = nil
-
-    @AppStorage("isAdvertisementHidden")
-    var isAdvertisementHidden: Bool = false
+    @State var temporaryOpenedURL: URL? = nil
 
     @AppStorage("isWarningHidden")
     var isWarningHidden: Bool = false
-
-    var shouldShowAdvertisement: Bool {
-        !isAdvertisementHidden &&
-            !appList.isPaidProductInstalled &&
-            !appList.filter.isSearching &&
-            !appList.filter.showPatchedOnly &&
-            !appList.isRebuildNeeded &&
-            !appList.isSelectorMode
-    }
 
     var appString: String {
         let appNameString = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "TrollFools"
@@ -69,12 +57,12 @@ struct AppListView: View {
                     presenting: temporaryOpenedURL
                 ) { result in
                     Button {
-                        selectorOpenedURL = result
+                        selectorOpenedURL = URLIdentifiable(url: result)
                     } label: {
                         Text(NSLocalizedString("Continue", comment: ""))
                     }
                     Button(role: .destructive) {
-                        selectorOpenedURL = result
+                        selectorOpenedURL = URLIdentifiable(url: result)
                         isWarningHidden = true
                     } label: {
                         Text(NSLocalizedString("Continue and Don’t Show Again", comment: ""))
@@ -86,7 +74,7 @@ struct AppListView: View {
                         Text(NSLocalizedString("Cancel", comment: ""))
                     }
                 } message: {
-                    Text(OptionView.warningMessage([$0.url]))
+                    Text(OptionView.warningMessage([result]))
                 }
         } else {
             content
@@ -107,17 +95,12 @@ struct AppListView: View {
                 else {
                     return
                 }
-                let urlIdent = URLIdentifiable(url: preprocessURL(url))
+                let processedURL = preprocessURL(url)
                 if !isWarningHidden && ext == "deb" {
-                    temporaryOpenedURL = urlIdent
+                    temporaryOpenedURL = processedURL
                     isWarningPresented = true
                 } else {
-                    selectorOpenedURL = urlIdent
-                }
-            }
-            .onAppear {
-                if Double.random(in: 0 ..< 1) < 0.1 {
-                    isAdvertisementHidden = false
+                    selectorOpenedURL = URLIdentifiable(url: processedURL)
                 }
             }
     }
@@ -241,8 +224,7 @@ struct AppListView: View {
             appList.isRebuildNeeded,
             appList.activeScope,
             appList.filter,
-            appList.unsupportedCount,
-            shouldShowAdvertisement
+            appList.unsupportedCount
         ))
         .listStyle(.insetGrouped)
         .navigationTitle(appList.isSelectorMode ?
@@ -284,12 +266,6 @@ struct AppListView: View {
                 Section {
                 } footer: {
                     paddedHeaderFooterText(String(format: NSLocalizedString("And %d more unsupported user applications.", comment: ""), appList.unsupportedCount))
-                }
-            }
-
-            if #available(iOS 15, *) {
-                if shouldShowAdvertisement {
-                    advertisementSection
                 }
             }
 
@@ -395,33 +371,6 @@ struct AppListView: View {
                 }
                 .padding(.vertical, 4)
             }
-        }
-    }
-
-    @available(iOS 15.0, *)
-    var advertisementSection: some View {
-        Section {
-            Button {
-                UIApplication.shared.open(App.advertisementApp.url)
-            } label: {
-                if #available(iOS 16, *) {
-                    AppListCell(app: App.advertisementApp)
-                } else {
-                    AppListCell(app: App.advertisementApp)
-                        .padding(.vertical, 4)
-                }
-            }
-            .foregroundColor(.primary)
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                Button {
-                    isAdvertisementHidden = true
-                } label: {
-                    Label(NSLocalizedString("Hide", comment: ""), systemImage: "eye.slash")
-                }
-                .tint(.red)
-            }
-        } header: {
-            paddedHeaderFooterText(NSLocalizedString("Advertisement", comment: ""))
         }
     }
 
