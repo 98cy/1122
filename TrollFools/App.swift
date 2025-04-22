@@ -85,6 +85,4 @@ final class App: Identifiable, ObservableObject {
     }
 }
 
-extension App {
-    // 已移除广告应用的静态属性
-}
+// 移除属性
