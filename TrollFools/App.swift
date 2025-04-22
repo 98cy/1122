@@ -85,4 +85,4 @@ final class App: Identifiable, ObservableObject {
     }
 }
 
-// 移除属性
+// 已完全移除广告相关扩展
