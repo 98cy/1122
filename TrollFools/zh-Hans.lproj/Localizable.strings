@@ -26,7 +26,7 @@
 "And %d more unsupported user applications." = "另有 %d 个不支持的用户应用。";
 
 /* No comment provided by engineer. */
-"Bringing back the most advanced system and security analysis tool." = "最强大的系统和安全分析工具，再次归来。";
+"Bringing back the most advanced system and security analysis tool." = "工具";
 
 /* StripedTextTableViewController */
 "Cancel" = "取消";
@@ -50,10 +50,10 @@
 "Copy" = "拷贝";
 
 /* No comment provided by engineer. */
-"Copyright" = "版权所有";
+"Copyright" = "98cy";
 
 /* StripedTextTableViewController */
-"Do you want to clear this log file “%@”?" = "你确定要清空日志文件 “%@” 吗？";
+"Do you want to clear this log file “%@”?" = "清空日志文件 “%@” 吗？";
 
 /* No comment provided by engineer. */
 "Done" = "完成";
@@ -98,7 +98,7 @@
 "Hide" = "Hide";
 
 /* No comment provided by engineer. */
-"If you do not know what these options mean, please do not change them." = "如果你不知道这些选项的含义，请不要更改。";
+"If you do not know what these options mean, please do not change them." = "默认设置。";
 
 /* No comment provided by engineer. */
 "Inject" = "注入";
@@ -131,7 +131,7 @@
 "Log Viewer" = "日志查看器";
 
 /* No comment provided by engineer. */
-"Made with ♥ by OwnGoal Studio" = "「乌龙工作室」倾情献制";
+"Made with ♥ by OwnGoal Studio" = "chang yong";
 
 /* No comment provided by engineer. */
 "No Applications" = "没有找到符合条件的应用程序";
@@ -143,7 +143,7 @@
 "No eligible framework found." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
-"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "没有找到符合条件的框架。\n\n通常情况下，这不是 TrollFools 自身的问题，而是目标应用程序的问题。你可能需要从 App Store 重新安装该应用。你不能在通过 “爱啪思道” 或 “NoAppThinning” 等方式安装的应用程序上使用 TrollFools。";
+"No eligible framework found.\n\nIt is usually not a bug with TrollFools itself, but rather with the target app. You may re-install that from App Store. You can’t use TrollFools with apps installed via “Asspp” or tweaks like “NoAppThinning”." = "没有找到符合条件的框架。";
 
 /* No comment provided by engineer. */
 "No Injected Plug-Ins" = "没有已注入的插件";
@@ -179,7 +179,7 @@
 "Rebuild Icon Cache" = "重建图标缓存";
 
 /* No comment provided by engineer. */
-"Record your phone calls like never before." = "通话录音，从未如此简单。";
+"Record your phone calls like never before." = "通话录音";
 
 /* No comment provided by engineer. */
 "Reveil" = "Reveil";
@@ -215,7 +215,7 @@
 "The content of text file “%@” is empty." = "文本文件 “%@” 的内容为空。";
 
 /* No comment provided by engineer. */
-"TrollFools" = "巨魔注入器";
+"TrollFools" = "TrollFools";
 
 /* No comment provided by engineer. */
 "TrollRecorder" = "巨魔录音机";
@@ -248,4 +248,4 @@
 "You need to rebuild the icon cache in TrollStore to apply changes." = "你需要在 TrollStore 中重建图标缓存以应用更改。";
 
 /* No comment provided by engineer. */
-"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "你至少选择了一个 Debian 软件包 “%@”。请留意，它通常不会像在越狱环境当中那样工作，甚至完全不起作用。请确保你知道自己在做些什么。";
+"You’ve selected at least one Debian Package “%@”. We’re here to remind you that it will not work as it was in a jailbroken environment. Please make sure you know what you’re doing." = "注入 Debian 软件包 “%@”。";
